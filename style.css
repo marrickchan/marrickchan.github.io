@@ -1,0 +1,56 @@
+/*  Extra small devices (portrait phones, less than 576px)
+    No media query for `xs` since this is the default in Bootstrap
+
+Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+}
+
+/*  
+Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+}
+
+/*  
+Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+}
+
+/*  
+Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+}
+
+/* HTML Modifiers */
+
+/* dark */
+body, html {
+    background: #000000 !important;
+    color: #FFFFFF !important;
+    height: 100%;
+    display: grid;
+    min-width: 500px;
+}
+.navbar {
+    background-color:rgba(135,0,0,1) !important;
+}
+
+/* Center div, text, images */
+.centered {
+    margin: auto;
+    padding-left: 12%;
+    padding-right: 12%;
+}
+
+.bodyText {
+    text-align: center;
+}
+
+.imgCenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    max-width: 130px;
+    border-radius: 50%;
+    border: 5px solid rgba(135,0,0,1);
+}
