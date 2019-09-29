@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./src/style.css">
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/e0b9a3c63e.js"></script>
@@ -17,6 +17,174 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <!-- d3js -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="./src/d3-timeline.js"></script>
+
+    <script>
+        window.onload = function() {
+            var data = [
+                {
+                    label: 'Java',
+                    times: [
+                        {
+                            'starting_time' : 1293858000,   /*2011 start*/
+                            'ending_time'   : 1420088400    /*2014 end*/
+                        },
+                        {
+                            'starting_time' : 1451624400,   /*2016 start*/
+                            'ending_time'   : 1514782800    /*2017 end*/
+                        }
+                    ],
+                    yearsString: '2011-2014, 2016-2017'
+                },
+                {
+                    label: 'C++',
+                    times: [
+                        {
+                            'starting_time' : 1325394000,   /*2012*/
+                            'ending_time'   : 1388552400    /*2016*/
+                        },
+                        {
+                            'starting_time' : 1451624400,   /*2016 start*/
+                            'ending_time'   : 1514782800    /*2017 end*/
+                        }
+                    ],
+                    yearsString: '2012-2013, 2016-2017'
+                },
+                {
+                    label: 'Go',
+                    times: [
+                        {
+                            'starting_time' : 1388552400,   /*2014 start*/
+                            'ending_time'   : 1420088400    /*2014 end*/
+                        }
+                    ],
+                    yearsString: '2014'
+                },
+                {
+                    label: 'Python',
+                    times: [
+                        {
+                            'starting_time' : 1388552400,   /*2014 start*/
+                            'ending_time'   : 1420088400    /*2014 end*/
+                        }
+                    ],
+                    yearsString: '2014'
+                },
+                {
+                    label: 'SQL',
+                    times: [
+                        {
+                            'starting_time' : 1388552400,   /*2014 start*/
+                            'ending_time'   : 1451624400    /*2015 end*/
+                        },
+                        {
+                            'starting_time' : 1483246800,   /*2017 start*/
+                            'ending_time'   : 1546318800    /*2018 end*/
+                        }
+                    ],
+                    yearsString: '2014-2015, 2017-2018'
+                },
+                {
+                    label: 'Clojure',
+                    times: [
+                        {
+                            'starting_time' : 1451624400,   /*2016 start*/
+                            'ending_time'   : 1483246800    /*2016 end*/
+                        }
+                    ],
+                    yearsString: '2016'
+                },
+                {
+                    label: 'Scala',
+                    times: [
+                        {
+                            'starting_time' : 1451624400,   /*2016 start*/
+                            'ending_time'   : 1483246800    /*2016 end*/
+                        }
+                    ],
+                    yearsString: '2016'
+                },
+                {
+                    label: 'jQuery',
+                    times: [
+                        {
+                            'starting_time' : 1451624400,   /*2016 start*/
+                            'ending_time'   : 1483246800    /*2016 end*/
+                        },
+                        {
+                            'starting_time' : 1546318800,   /*2019 start*/
+                            'ending_time'   : 1577854800    /*2019 end*/
+                        }
+                    ],
+                    yearsString: '2016, 2019'
+                },
+                {
+                    label: 'Android (Java)',
+                    times: [
+                        {
+                            'starting_time' : 1483246800,   /*2017 start*/
+                            'ending_time'   : 1514782800    /*2018 end*/
+                        }
+                    ],
+                    yearsString: '2017'
+                },
+                {
+                    label: 'JavaScript',
+                    times: [
+                        {
+                            'starting_time' : 1451624400,   /*2016 start*/
+                            'ending_time'   : 1577854800    /*2019 end*/
+                        }
+                    ],
+                    yearsString: '2016-2019'
+                },
+                {
+                    label: 'SuiteScript 1.0, 2.0',
+                    times: [
+                        {
+                            'starting_time' : 1483246800,   /*2017 start*/
+                            'ending_time'   : 1577854800    /*2019 end*/
+                        }
+                    ],
+                    yearsString: '2017-2019'
+                },
+
+                
+            ];
+
+            var colorScale = d3.scale.ordinal()
+                .range(['#FFFFFF'])
+                .domain(['Java']);
+
+            var timeline = d3.timeline()
+                .beginning(1293858000) // we can optionally add beginning and ending times to speed up rendering a little
+                .ending(1577854800)
+                .margin({left:70, right:30, top:0, bottom:0})
+                .background('#000000')
+                .hover(function (d, i, datum) {
+                    var newtooltip = '<div id="tooltipText">' + datum.label + ': ' + datum.yearsString + '</div>'
+                    var tooltip = document.getElementById('tooltipText');
+                    tooltip.outerHTML = newtooltip
+                })
+                .mouseout(function(){
+                    var newtooltip = '<div id="tooltipText">Hover on the graph</div>'
+                    var tooltip = document.getElementById('tooltipText');
+                    tooltip.outerHTML = newtooltip
+                })
+                .showTimeAxis()
+                .stack();
+
+            var svg = d3.select("#programming-timeline")
+                .append("svg")
+                .attr("width", 500)
+                .datum(data)
+                .call(timeline);
+        }
+
+    </script>
 </head>
 <header>
     <!-- Insert Navigation Bar -->
@@ -33,7 +201,7 @@
                     <a class="nav-link" href="#">Previous Works</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./resume_marrickchan.pdf">Resume</a>
+                    <a class="nav-link" href="./src/resume_marrickchan.pdf">Resume</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -49,9 +217,12 @@
 </header>
 <body>
     <!-- Body of Home Page -->
-    <div class="centered">
-        <h1><i class="fas fa-tools"></i> Under Construction</h1>
+    <div class="bodyText">
+        <h1 id="tooltip">Programming Experience</h1>
+            <span id="tooltipText">Hover on the graph</span>
+        <div id="programming-timeline"></div>
     </div>
+
 </body>
 <footer>
 
